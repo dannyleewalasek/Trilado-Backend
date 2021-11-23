@@ -4,9 +4,9 @@ import fetch from "node-fetch";
 import * as fs from "fs";
 const app = Express();
 app.use(cors());
-fs.writeFile("text.txt", "something", () => {
-  console.log("succesful");
-});
+// fs.writeFile("text.txt", "something", () => {
+//   console.log("succesful");
+// });
 const apiKey = fs.readFile("bin/apikey.txt", function (err, data) {
   if (err) {
     return console.error(err);
