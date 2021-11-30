@@ -7,11 +7,12 @@ app.use(cors());
 // fs.writeFile("text.txt", "something", () => {
 //   console.log("succesful");
 // });
-const apiKey = fs.readFile("bin/apikey.txt", function (err, data) {
+let apiKey = undefined;
+fs.readFile("bin/apikey.txt", "utf8", function (err, data) {
   if (err) {
     return console.error(err);
   }
-  return data;
+  apiKey = data;
 });
 app.get("/frequent", function (req, res) {
   fetch(
@@ -27,6 +28,7 @@ app.get("/frequent", function (req, res) {
 });
 app.get("/search", function (req, res) {
   console.log(req.query.query);
+  console.log(apiKey);
   fetch(
     `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.query.query}&page=1&include_adult=false`
   )
