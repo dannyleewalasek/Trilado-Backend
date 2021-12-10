@@ -20,6 +20,7 @@ app.get("/frequent", function (req, res) {
   )
     .then((response) => response.json())
     .then((response) => {
+      simplifyJson(response);
       res.send(response.results);
     })
     .catch((err) => {
@@ -42,3 +43,12 @@ app.get("/search", function (req, res) {
 });
 app.get("/recommend", function (req, res) {});
 app.listen(3000);
+
+const simplifyJson = function (filmJSON) {
+  let simplified = {
+    title: filmJSON.results[0].title,
+    id: filmJSON.results[0].id,
+    poster_path: filmJSON.results[0].title,
+  };
+  return simplified;
+};
