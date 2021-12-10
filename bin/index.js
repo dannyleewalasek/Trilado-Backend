@@ -20,8 +20,7 @@ app.get("/frequent", function (req, res) {
   )
     .then((response) => response.json())
     .then((response) => {
-      simplifyJson(response);
-      res.send(response.results);
+      res.send(simplifyJson(response.results));
     })
     .catch((err) => {
       res.send("error");
@@ -35,7 +34,7 @@ app.get("/search", function (req, res) {
   )
     .then((response) => response.json())
     .then((response) => {
-      res.send(response.results);
+      res.send(simplifyJson(response.results));
     })
     .catch((err) => {
       res.send("error");
@@ -45,10 +44,16 @@ app.get("/recommend", function (req, res) {});
 app.listen(3000);
 
 const simplifyJson = function (filmJSON) {
-  let simplified = {
-    title: filmJSON.results[0].title,
-    id: filmJSON.results[0].id,
-    poster_path: filmJSON.results[0].title,
-  };
+  let simplified = [];
+
+  for (let key in filmJSON) {
+    simplified.push({
+      original_title: filmJSON[key].original_title,
+      id: filmJSON[key].id,
+      poster_path: filmJSON[key].poster_path,
+      release_date: filmJSON[key].release_date,
+    });
+  }
+  console.log(simplified);
   return simplified;
 };
