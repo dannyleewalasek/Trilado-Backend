@@ -2,11 +2,9 @@ import Express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 import * as fs from "fs";
+const PORT = process.env.PORT || 3000;
 const app = Express();
 app.use(cors());
-// fs.writeFile("text.txt", "something", () => {
-//   console.log("succesful");
-// });
 let apiKey = undefined;
 fs.readFile("bin/apikey.txt", "utf8", function (err, data) {
   if (err) {
@@ -41,7 +39,9 @@ app.get("/search", function (req, res) {
     });
 });
 app.get("/recommend", function (req, res) {});
-app.listen(3000);
+app.listen(PORT, () => {
+  console.warn(`App listening on ${PORT}`);
+});
 
 const simplifyJson = function (filmJSON) {
   let simplified = [];

@@ -3,6 +3,9 @@ import cors from "cors";
 import fetch from "node-fetch";
 import { createRequire } from "module";
 import * as fs from "fs";
+const dotenv = require("dotenv");
+
+dotenv.config();
 const app = Express();
 
 app.use(cors());
@@ -11,13 +14,7 @@ fs.writeFile("text.txt", "something", () => {
   console.log("succesful");
 });
 
-const apiKey = fs.readFile("apikey.txt", function (err, data) {
-  if (err) {
-    return console.error(err);
-  }
-  return data;
-});
-
+const apiKey = process.env.PASSWORD;
 app.get("/frequent", function (req: Express.Request, res: Express.Response) {
   fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`
