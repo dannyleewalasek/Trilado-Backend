@@ -4,9 +4,9 @@
   "description": "Back end code for trilado movie recommendation web app",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm typescript -b -v && nodemon bin/index.js",
-    "tsc": "tsc"
+    "start": "node bin/index.js",
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",

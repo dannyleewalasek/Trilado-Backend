@@ -7,12 +7,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const app = Express();
+const PORT = process.env.PORT || 4000;
 
 app.use(cors());
-
-fs.writeFile("text.txt", "something", () => {
-  console.log("succesful");
-});
 
 const apiKey = process.env.PASSWORD;
 app.get("/frequent", function (req: Express.Request, res: Express.Response) {
@@ -47,4 +44,4 @@ app.get(
   function (req: Express.Request, res: Express.Response) {}
 );
 
-app.listen(3000);
+app.listen(PORT, () => console.warn(`listenign on ${PORT}`));

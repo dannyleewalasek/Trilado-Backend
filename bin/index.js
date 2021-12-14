@@ -1,14 +1,11 @@
 import Express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
-import * as fs from "fs";
 import dotenv from "dotenv";
 dotenv.config();
 const app = Express();
+const PORT = process.env.PORT || 4000;
 app.use(cors());
-fs.writeFile("text.txt", "something", () => {
-    console.log("succesful");
-});
 const apiKey = process.env.PASSWORD;
 app.get("/frequent", function (req, res) {
     fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`)
@@ -32,4 +29,4 @@ app.get("/search", function (req, res) {
     });
 });
 app.get("/recommend", function (req, res) { });
-app.listen(3000);
+app.listen(PORT, () => console.warn(`listenign on ${PORT}`));
