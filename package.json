@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc -b -v && nodemon bin/index.js",
+    "start": "npm typescript -b -v && nodemon bin/index.js",
     "tsc": "tsc"
   },
   "repository": {
