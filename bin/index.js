@@ -2,58 +2,34 @@ import Express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 import * as fs from "fs";
-const PORT = process.env.PORT || 3000;
+import dotenv from "dotenv";
+dotenv.config();
 const app = Express();
 app.use(cors());
-let apiKey = undefined;
-fs.readFile("bin/apikey.txt", "utf8", function (err, data) {
-  if (err) {
-    return console.error(err);
-  }
-  apiKey = data;
+fs.writeFile("text.txt", "something", () => {
+    console.log("succesful");
 });
+const apiKey = process.env.PASSWORD;
 app.get("/frequent", function (req, res) {
-  fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      res.send(simplifyJson(response.results));
+    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`)
+        .then((response) => response.json())
+        .then((response) => {
+        res.send(response.results);
     })
-    .catch((err) => {
-      res.send("error");
+        .catch((err) => {
+        res.send("error");
     });
 });
 app.get("/search", function (req, res) {
-  console.log(req.query.query);
-  console.log(apiKey);
-  fetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.query.query}&page=1&include_adult=false`
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      res.send(simplifyJson(response.results));
+    console.log(req.query.query);
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.query.query}&page=1&include_adult=false`)
+        .then((response) => response.json())
+        .then((response) => {
+        res.send(response.results);
     })
-    .catch((err) => {
-      res.send("error");
+        .catch((err) => {
+        res.send("error");
     });
 });
-app.get("/recommend", function (req, res) {});
-app.listen(PORT, () => {
-  console.warn(`App listening on ${PORT}`);
-});
-
-const simplifyJson = function (filmJSON) {
-  let simplified = [];
-
-  for (let key in filmJSON) {
-    simplified.push({
-      original_title: filmJSON[key].original_title,
-      id: filmJSON[key].id,
-      poster_path: filmJSON[key].poster_path,
-      release_date: filmJSON[key].release_date,
-    });
-  }
-  console.log(simplified);
-  return simplified;
-};
+app.get("/recommend", function (req, res) { });
+app.listen(3000);
