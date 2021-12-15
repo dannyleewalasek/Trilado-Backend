@@ -2,12 +2,14 @@ import Express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import testConnection from "./databasemanagement";
 dotenv.config();
 const app = Express();
 const PORT = process.env.PORT || 4000;
 app.use(cors());
 const apiKey = process.env.PASSWORD;
 app.get("/frequent", function (req, res) {
+    testConnection();
     fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`)
         .then((response) => response.json())
         .then((response) => {
