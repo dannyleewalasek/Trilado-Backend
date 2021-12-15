@@ -2,14 +2,36 @@ import Express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-import testConnection from "./databasemanagement";
+import { MongoClient } from "mongodb";
+const uri = `mongodb+srv://dannyleewalasek:Mongox993@trilado.rd8a1.mongodb.net/Trilado?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
+async function run() {
+    console.log(process.env.MONGO_USERNAME);
+    try {
+        await client.connect();
+        const db = (await client).db("Trilado");
+        const doc = await db
+            .collection("Trilado")
+            .findOne({ test: "test" }, (err) => {
+            if (err)
+                console.log(err);
+        });
+        console.log(doc);
+    }
+    catch (err) {
+        console.log(err);
+    }
+    finally {
+        await client.close();
+    }
+}
+run();
 dotenv.config();
 const app = Express();
 const PORT = process.env.PORT || 4000;
 app.use(cors());
 const apiKey = process.env.PASSWORD;
 app.get("/frequent", function (req, res) {
-    testConnection();
     fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`)
         .then((response) => response.json())
         .then((response) => {
